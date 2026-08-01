@@ -16,6 +16,7 @@ import {
   Heart,
   MessageSquare,
   Check,
+  Clock,
 } from 'lucide-react';
 
 export default function NurseDashboard() {
