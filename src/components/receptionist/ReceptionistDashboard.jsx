@@ -86,23 +86,23 @@ export default function ReceptionistDashboard() {
   return (
     <div className="max-w-[1400px] mx-auto px-6 py-5">
       {/* Header */}
-      <div className="flex items-center justify-between mb-5">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-5">
         <div>
           <h1 className="font-serif font-semibold text-2xl text-navy">Reception</h1>
           <p className="text-sm text-navy/50 font-sans mt-[2px]">
             Today&apos;s appointments: <span className="font-mono font-medium text-navy">{todaysAppointments.length}</span>
           </p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 w-full sm:w-auto">
           <button
-            className={`btn ${activePanel === 'booking' ? 'btn-primary' : 'btn-secondary'} rounded-lg`}
+            className={`btn flex-1 sm:flex-none ${activePanel === 'booking' ? 'btn-primary' : 'btn-secondary'} rounded-lg`}
             onClick={() => setActivePanel(activePanel === 'booking' ? null : 'booking')}
           >
             <CalendarPlus size={16} />
-            Book Appointment
+            Book
           </button>
           <button
-            className={`btn ${activePanel === 'walkin' ? 'btn-primary' : 'btn-secondary'} rounded-lg`}
+            className={`btn flex-1 sm:flex-none ${activePanel === 'walkin' ? 'btn-primary' : 'btn-secondary'} rounded-lg`}
             onClick={() => setActivePanel(activePanel === 'walkin' ? null : 'walkin')}
           >
             <UserPlus size={16} />
@@ -139,7 +139,7 @@ export default function ReceptionistDashboard() {
       {/* ═══ Queue Board ═══ */}
       <div className="card p-5 mb-5 border-none shadow-card bg-panel">
         <h2 className="font-sans font-semibold text-[17px] text-navy mb-4">Live Queue</h2>
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-4 min-h-[200px]">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-4 min-h-[200px]">
           {QUEUE_COLUMNS.map(col => (
             <div key={col.key} className="flex flex-col bg-paper/50 rounded-xl p-3 border border-rule/50">
               {/* Column header */}
@@ -173,9 +173,9 @@ export default function ReceptionistDashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
         {/* Appointment List */}
         <div className="lg:col-span-2 card p-5 border-none shadow-card">
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
             <h2 className="font-sans font-semibold text-[17px] text-navy">Today&apos;s Appointments</h2>
-            <div className="flex items-center gap-1.5 bg-paper p-1 rounded-lg">
+            <div className="flex flex-wrap items-center gap-1.5 bg-paper p-1 rounded-lg">
               {['All', 'Scheduled', 'Checked-In', 'With Nurse', 'With Doctor', 'Completed'].map(f => (
                 <button
                   key={f}
@@ -194,9 +194,9 @@ export default function ReceptionistDashboard() {
             {filteredAppointments.map(appt => (
               <div
                 key={appt.id}
-                className={`${STATUS_RAIL_CLASS[appt.status] || ''} flex items-center justify-between py-3 px-4 bg-paper/30 rounded-xl border border-rule/50 hover:bg-paper hover:border-rule transition-colors`}
+                className={`${STATUS_RAIL_CLASS[appt.status] || ''} flex flex-col sm:flex-row sm:items-center justify-between py-3 px-4 bg-paper/30 rounded-xl border border-rule/50 hover:bg-paper hover:border-rule transition-colors`}
               >
-                <div className="flex items-center gap-4 min-w-0">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 min-w-0 mb-3 sm:mb-0">
                   <span className="font-mono text-[13px] text-navy/60 w-[52px] flex-shrink-0">{appt.time}</span>
                   <div className="min-w-0">
                     <span className="font-sans font-semibold text-[15px] text-navy truncate block">{appt.patientName}</span>
@@ -205,7 +205,7 @@ export default function ReceptionistDashboard() {
                     )}
                   </div>
                 </div>
-                <div className="flex items-center gap-3 flex-shrink-0">
+                <div className="flex items-center gap-3 flex-shrink-0 self-end sm:self-auto">
                   {appt.assignedRoom && (
                     <span className="font-mono text-[11px] bg-panel px-2 py-0.5 rounded-md border border-rule/50 text-navy/50 shadow-sm">{appt.assignedRoom}</span>
                   )}

@@ -14,6 +14,7 @@ import {
   ChevronLeft,
   ChevronRight,
   RotateCcw,
+  Menu,
 } from 'lucide-react';
 
 const ROLE_ROUTES = {
@@ -31,10 +32,9 @@ function OperoLogoMark({ className }) {
   );
 }
 
-export default function Sidebar() {
+export default function Sidebar({ mobileOpen, setMobileOpen, collapsed, setCollapsed }) {
   const { auth, dispatch, ACTIONS } = useOpero();
   const navigate = useNavigate();
-  const [collapsed, setCollapsed] = useState(false);
 
   const dashboardPath = ROLE_ROUTES[auth?.role] || '/receptionist';
 
@@ -58,103 +58,138 @@ export default function Sidebar() {
   };
 
   return (
-    <aside
-      className={`fixed top-0 left-0 h-screen bg-panel border-r border-rule z-50 flex flex-col transition-[width] duration-200 shadow-sm ${
-        collapsed ? 'w-[64px]' : 'w-[240px]'
-      }`}
-    >
-      {/* ── Brand Header Block (Gradient) ── */}
-      <div className="bg-gradient-to-br from-periwinkle to-deep-blue flex flex-col justify-end flex-shrink-0 transition-all duration-200 overflow-hidden"
-           style={{ height: collapsed ? '64px' : '110px' }}>
-        <div className="px-4 pb-4 flex items-center gap-3">
-          <OperoLogoMark className="flex-shrink-0" />
-          {!collapsed && (
-            <span className="font-serif font-bold text-xl text-white tracking-tight leading-none lowercase">
-              opero
-            </span>
-          )}
-        </div>
-      </div>
-
-      {/* ── User info ── */}
-      {!collapsed && auth && (
-        <div className="px-5 py-4 border-b border-rule bg-paper/30">
-          <div className="font-sans text-sm font-semibold text-navy truncate">{auth.name}</div>
-          <div className="font-sans text-xs font-medium text-navy/50 mt-[2px]">{auth.role}</div>
-        </div>
+    <>
+      {/* Mobile overlay */}
+      {mobileOpen && (
+        <div 
+          className="fixed inset-0 bg-navy/20 z-40 md:hidden"
+          onClick={() => setMobileOpen(false)}
+        />
       )}
-
-      {/* ── Nav items ── */}
-      <nav className="flex-1 py-3 overflow-y-auto">
-        {navItems.map(item => {
-          const Icon = item.icon;
-          return (
-            <NavLink
-              key={item.to}
-              to={item.to}
-              className={({ isActive }) =>
-                `flex items-center gap-3 px-4 py-[12px] mx-2 mb-1 rounded-lg text-sm font-sans font-medium transition-colors relative ${
-                  isActive
-                    ? 'text-deep-blue bg-periwinkle/30'
-                    : 'text-navy/60 hover:text-navy hover:bg-paper'
-                }`
-              }
-            >
-              {({ isActive }) => (
-                <>
-                  {/* Active rail indicator */}
-                  {isActive && (
-                    <span className="absolute left-0 top-[8px] bottom-[8px] w-[4px] rounded-r bg-deep-blue" />
-                  )}
-                  <Icon size={18} strokeWidth={isActive ? 2.5 : 2} className="flex-shrink-0" />
-                  {!collapsed && <span className="truncate">{item.label}</span>}
-                </>
-              )}
-            </NavLink>
-          );
-        })}
-      </nav>
-
-      {/* ── Bottom actions ── */}
-      <div className="border-t border-rule py-3 flex-shrink-0">
-        <button
-          onClick={handleReset}
-          className="flex items-center gap-3 px-4 py-[10px] mx-2 rounded-lg text-sm font-sans text-navy/40 hover:text-navy hover:bg-paper transition-colors w-full"
-          title="Reset data"
-        >
-          <RotateCcw size={16} strokeWidth={2} className="flex-shrink-0" />
-          {!collapsed && <span>Reset Data</span>}
-        </button>
-        <button
-          onClick={handleLogout}
-          className="flex items-center gap-3 px-4 py-[10px] mx-2 rounded-lg text-sm font-sans text-rust/80 hover:text-rust hover:bg-rust/5 transition-colors w-full"
-          title="Sign out"
-        >
-          <LogOut size={16} strokeWidth={2} className="flex-shrink-0" />
-          {!collapsed && <span>Sign Out</span>}
-        </button>
-      </div>
-
-      {/* ── Collapse toggle ── */}
-      <button
-        onClick={() => setCollapsed(!collapsed)}
-        className="absolute -right-3 top-[80px] flex items-center justify-center w-6 h-6 bg-panel border border-rule rounded-full text-navy/40 hover:text-navy shadow-sm transition-colors z-10"
-        title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+      
+      <aside
+        className={`fixed top-0 left-0 h-screen bg-panel border-r border-rule z-50 flex flex-col transition-all duration-300 shadow-sm
+          ${collapsed ? 'w-[64px]' : 'w-[240px]'}
+          ${mobileOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
+        `}
       >
-        {collapsed ? <ChevronRight size={14} /> : <ChevronLeft size={14} />}
-      </button>
-    </aside>
+        {/* ── Brand Header Block (Gradient) ── */}
+        <div className="bg-gradient-to-br from-periwinkle to-deep-blue flex flex-col justify-end flex-shrink-0 transition-all duration-200 overflow-hidden"
+             style={{ height: collapsed ? '64px' : '110px' }}>
+          <div className="px-4 pb-4 flex items-center gap-3">
+            <OperoLogoMark className="flex-shrink-0" />
+            {!collapsed && (
+              <span className="font-serif font-bold text-xl text-white tracking-tight leading-none lowercase">
+                opero
+              </span>
+            )}
+          </div>
+        </div>
+
+        {/* ── User info ── */}
+        {!collapsed && auth && (
+          <div className="px-5 py-4 border-b border-rule bg-paper/30">
+            <div className="font-sans text-sm font-semibold text-navy truncate">{auth.name}</div>
+            <div className="font-sans text-xs font-medium text-navy/50 mt-[2px]">{auth.role}</div>
+          </div>
+        )}
+
+        {/* ── Nav items ── */}
+        <nav className="flex-1 py-3 overflow-y-auto">
+          {navItems.map(item => {
+            const Icon = item.icon;
+            return (
+              <NavLink
+                key={item.to}
+                to={item.to}
+                onClick={() => setMobileOpen(false)}
+                className={({ isActive }) =>
+                  `flex items-center gap-3 px-4 py-[12px] mx-2 mb-1 rounded-lg text-sm font-sans font-medium transition-colors relative ${
+                    isActive
+                      ? 'text-deep-blue bg-periwinkle/30'
+                      : 'text-navy/60 hover:text-navy hover:bg-paper'
+                  }`
+                }
+              >
+                {({ isActive }) => (
+                  <>
+                    {/* Active rail indicator */}
+                    {isActive && (
+                      <span className="absolute left-0 top-[8px] bottom-[8px] w-[4px] rounded-r bg-deep-blue" />
+                    )}
+                    <Icon size={18} strokeWidth={isActive ? 2.5 : 2} className="flex-shrink-0" />
+                    {!collapsed && <span className="truncate">{item.label}</span>}
+                  </>
+                )}
+              </NavLink>
+            );
+          })}
+        </nav>
+
+        {/* ── Bottom actions ── */}
+        <div className="border-t border-rule py-3 flex-shrink-0">
+          <button
+            onClick={handleReset}
+            className="flex items-center gap-3 px-4 py-[10px] mx-2 rounded-lg text-sm font-sans text-navy/40 hover:text-navy hover:bg-paper transition-colors w-[calc(100%-16px)]"
+            title="Reset data"
+          >
+            <RotateCcw size={16} strokeWidth={2} className="flex-shrink-0" />
+            {!collapsed && <span>Reset Data</span>}
+          </button>
+          <button
+            onClick={handleLogout}
+            className="flex items-center gap-3 px-4 py-[10px] mx-2 rounded-lg text-sm font-sans text-rust/80 hover:text-rust hover:bg-rust/5 transition-colors w-[calc(100%-16px)]"
+            title="Sign out"
+          >
+            <LogOut size={16} strokeWidth={2} className="flex-shrink-0" />
+            {!collapsed && <span>Sign Out</span>}
+          </button>
+        </div>
+
+        {/* ── Collapse toggle (Desktop/Tablet only) ── */}
+        <button
+          onClick={() => setCollapsed(!collapsed)}
+          className="hidden md:flex absolute -right-3 top-[80px] items-center justify-center w-6 h-6 bg-panel border border-rule rounded-full text-navy/40 hover:text-navy shadow-sm transition-colors z-10"
+          title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+        >
+          {collapsed ? <ChevronRight size={14} /> : <ChevronLeft size={14} />}
+        </button>
+      </aside>
+    </>
   );
 }
 
 // Layout wrapper that includes sidebar + content area
 export function SidebarLayout({ children }) {
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [collapsed, setCollapsed] = useState(false);
+
   return (
-    <div className="min-h-screen bg-paper flex">
-      <Sidebar />
-      {/* Main content — uses flex-1 so it takes remaining space, margins handled by sidebar fixed position */}
-      {/* Using pl-[240px] for default width */}
-      <div className="flex-1 min-h-screen pl-[240px] transition-[padding] duration-200">
+    <div className="min-h-screen bg-paper flex flex-col md:flex-row">
+      {/* Mobile Top Bar */}
+      <div className="md:hidden flex items-center justify-between p-4 bg-gradient-to-br from-periwinkle to-deep-blue text-white z-30 sticky top-0 shadow-sm">
+        <div className="flex items-center gap-3">
+          <OperoLogoMark className="flex-shrink-0 w-6 h-6" />
+          <span className="font-serif font-bold text-xl tracking-tight leading-none lowercase">
+            opero
+          </span>
+        </div>
+        <button onClick={() => setMobileOpen(true)} className="p-1 hover:bg-white/20 rounded-md transition-colors">
+          <Menu size={24} />
+        </button>
+      </div>
+
+      <Sidebar 
+        mobileOpen={mobileOpen} 
+        setMobileOpen={setMobileOpen} 
+        collapsed={collapsed}
+        setCollapsed={setCollapsed}
+      />
+      
+      {/* Main content — uses flex-1 so it takes remaining space, margins handled by sidebar fixed position on md+ */}
+      <div className={`flex-1 min-h-[calc(100vh-60px)] md:min-h-screen transition-[padding] duration-300
+        ${collapsed ? 'md:pl-[64px]' : 'md:pl-[240px]'}
+      `}>
         {children}
       </div>
     </div>

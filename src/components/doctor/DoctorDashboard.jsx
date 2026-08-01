@@ -132,7 +132,7 @@ export default function DoctorDashboard() {
 
       {/* Patient selector tabs */}
       {withDoctor.length > 0 && (
-        <div className="flex items-center gap-2 mb-4 overflow-x-auto pb-2">
+        <div className="flex items-center gap-2 mb-4 overflow-x-auto whitespace-nowrap pb-2 scrollbar-hide">
           {withDoctor.map(appt => (
             <button
               key={appt.id}
@@ -177,7 +177,7 @@ export default function DoctorDashboard() {
 
               {/* Vitals */}
               {activeAppt.vitals && (
-                <div className="grid grid-cols-4 gap-3 mt-4 p-4 bg-paper rounded-xl border border-rule/50">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4 p-4 bg-paper rounded-xl border border-rule/50">
                   <VitalDisplay icon={<Activity size={14} />} label="BP" value={activeAppt.vitals.bp} />
                   <VitalDisplay icon={<Weight size={14} />} label="Weight" value={activeAppt.vitals.weight} />
                   <VitalDisplay icon={<Thermometer size={14} />} label="Temp" value={activeAppt.vitals.temperature} />
@@ -243,8 +243,8 @@ export default function DoctorDashboard() {
               <div className="card p-6 border-none bg-paper/50">
                 <div className="space-y-3">
                   {prescriptions.map((rx, idx) => (
-                    <div key={idx} className="grid grid-cols-12 gap-3 items-end bg-panel p-4 rounded-xl shadow-sm border border-rule/50">
-                      <div className="col-span-4">
+                    <div key={idx} className="grid grid-cols-1 md:grid-cols-12 gap-3 items-end bg-panel p-4 rounded-xl shadow-sm border border-rule/50">
+                      <div className="md:col-span-4">
                         <label className="label text-navy/60">Drug Name</label>
                         <input
                           className="input font-mono bg-paper/50 rounded-lg"
@@ -253,7 +253,7 @@ export default function DoctorDashboard() {
                           onChange={(e) => updatePrescription(idx, 'drug', e.target.value)}
                         />
                       </div>
-                      <div className="col-span-3">
+                      <div className="md:col-span-3">
                         <label className="label text-navy/60">Dosage</label>
                         <input
                           className="input font-mono bg-paper/50 rounded-lg"
@@ -262,7 +262,7 @@ export default function DoctorDashboard() {
                           onChange={(e) => updatePrescription(idx, 'dosage', e.target.value)}
                         />
                       </div>
-                      <div className="col-span-4">
+                      <div className="md:col-span-4">
                         <label className="label text-navy/60">Instructions</label>
                         <input
                           className="input bg-paper/50 rounded-lg"
@@ -271,7 +271,7 @@ export default function DoctorDashboard() {
                           onChange={(e) => updatePrescription(idx, 'instructions', e.target.value)}
                         />
                       </div>
-                      <div className="col-span-1 flex justify-center pb-2">
+                      <div className="md:col-span-1 flex justify-end md:justify-center pb-2">
                         {prescriptions.length > 1 && (
                           <button
                             className="text-rust/50 hover:text-rust transition-colors p-1"
@@ -289,8 +289,8 @@ export default function DoctorDashboard() {
                   <button className="btn btn-sm btn-secondary rounded-lg" onClick={addPrescriptionRow}>
                     <Plus size={14} /> Add Medication
                   </button>
-                  <button className="btn btn-sm btn-secondary rounded-lg text-deep-blue" onClick={() => window.print()}>
-                    <Printer size={14} /> Print / Export
+                  <button className="btn btn-sm btn-secondary rounded-lg text-deep-blue mt-3 sm:mt-0" onClick={() => window.print()}>
+                    <Printer size={14} /> <span className="hidden sm:inline">Print / Export</span><span className="sm:hidden">Print</span>
                   </button>
                 </div>
               </div>

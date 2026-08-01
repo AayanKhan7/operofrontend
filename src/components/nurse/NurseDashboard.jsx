@@ -166,7 +166,7 @@ export default function NurseDashboard() {
                   <h3 className="font-sans font-semibold text-[13px] uppercase tracking-wider text-navy/50 mb-3 flex items-center gap-2">
                     <Activity size={14} /> Vitals
                   </h3>
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                     <div>
                       <label className="label text-navy/70">Blood Pressure</label>
                       <div className="relative">
