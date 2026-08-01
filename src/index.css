@@ -1,0 +1,114 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --navy: #1B2F4E;
+    --periwinkle: #C7D6EF;
+    --sky: #7C97C4;
+    --deep-blue: #4A639A;
+    --paper: #F4F6FB;
+    --panel: #FFFFFF;
+    --rule: #D8E1F0;
+    --whatsapp-green: #25D366;
+    --amber: #C98A2C;
+    --plum: #6E4A66;
+    --rust: #B5484B;
+    --ink-black: #0A0A0A;
+  }
+
+  html, body {
+    @apply bg-paper text-navy font-sans antialiased;
+  }
+
+  /* Focus rings for accessibility */
+  *:focus-visible {
+    @apply outline-none ring-2 ring-deep-blue ring-offset-2 ring-offset-paper;
+  }
+}
+
+@layer components {
+  /* Forms */
+  .input {
+    @apply w-full bg-panel border border-rule rounded-md px-3 py-2 text-sm text-navy transition-colors;
+    @apply focus:border-deep-blue focus:ring-1 focus:ring-deep-blue outline-none;
+  }
+  .input::placeholder {
+    color: rgba(27, 47, 78, 0.3); /* text-navy/30 */
+  }
+  
+  .input-error {
+    @apply border-rust focus:border-rust focus:ring-rust;
+  }
+
+  .label {
+    @apply block text-xs font-medium text-navy text-opacity-60 mb-1 uppercase tracking-wider;
+  }
+  
+  .field-error {
+    @apply text-[0.6875rem] text-rust mt-1 font-medium;
+  }
+
+  /* Buttons */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2 rounded-md font-sans text-sm font-medium transition-all;
+    @apply active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none;
+  }
+  
+  .btn-sm {
+    @apply px-3 py-1.5 text-xs;
+  }
+  
+  .btn-xs {
+    @apply px-2 py-1 text-xs;
+  }
+  
+  .btn-primary {
+    @apply bg-deep-blue text-white shadow-sm hover:bg-navy;
+  }
+  
+  .btn-secondary {
+    @apply bg-panel border border-rule text-navy hover:bg-paper hover:border-sky hover:border-opacity-50 shadow-sm;
+  }
+  
+  .btn-danger {
+    @apply bg-panel border border-rule text-rust hover:bg-rust hover:bg-opacity-5 hover:border-rust hover:border-opacity-30 shadow-sm;
+  }
+  
+  .btn-sage {
+    @apply bg-whatsapp-green text-white shadow-sm hover:opacity-90;
+  }
+
+  /* Cards */
+  .card {
+    @apply bg-panel border border-rule rounded-lg shadow-card;
+  }
+
+  /* Status Rails */
+  .status-rail {
+    @apply relative overflow-hidden pl-3;
+  }
+  
+  .status-rail::before {
+    content: '';
+    @apply absolute left-0 top-0 bottom-0 w-[4px] transition-colors duration-200;
+  }
+  
+  .status-rail--scheduled::before { @apply bg-rule; }
+  .status-rail--checked-in::before { @apply bg-sky; }
+  .status-rail--with-nurse::before { @apply bg-amber; }
+  .status-rail--with-doctor::before { @apply bg-plum; }
+  .status-rail--completed::before { @apply bg-whatsapp-green; }
+  .status-rail--no-show::before, .status-rail--cancelled::before { @apply bg-rust; }
+}
+
+/* Custom Utilities */
+.confirm-pulse {
+  animation: gentle-pulse 0.6s cubic-bezier(0.4, 0, 0.6, 1);
+}
+
+@keyframes gentle-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(0.96); }
+}
